@@ -327,7 +327,9 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 				} else {
 					$question_display .= trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
 				}				 
-				$question_display .= '</label></span>';
+				$question_display .= '</label>';
+                                $question_display = apply_filters('qsm_multiple_choice_horizontal_display_loop', $question_display, $id, $question, $answers);
+                                $question_display .= '</span>';
 			}
 		}
 		$question_display .= "<input type='radio' style='display: none;' name='question" . $id . "' id='question" . $id . "_none' checked='checked' value='' />";
@@ -1357,7 +1359,9 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 
 	if ( $question_id ) {
 		$featureImageID    = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
-		$question_display .= wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) );
+                if( $featureImageID ){
+                    $question_display .= '<div class="qsm-featured-image">' . wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ) . '</div>';
+                }
 	}
 	if ( $new_question_title != '' ) {
 		$question_display  .= "<span class='mlw_qmn_new_question'>" . sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) . '</span>';
