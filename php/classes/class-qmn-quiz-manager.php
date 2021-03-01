@@ -2051,7 +2051,9 @@ add_filter('qmn_begin_shortcode', 'qmn_require_login_check', 10, 3);
 
 function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_variables) {
     global $qmn_allowed_visit;
+
     if ($qmn_quiz_options->require_log_in == 1 && !is_user_logged_in()) {
+      
         $qmn_allowed_visit = false;
         if(isset($qmn_quiz_options->require_log_in_text) && $qmn_quiz_options->require_log_in_text != ''){
             $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
