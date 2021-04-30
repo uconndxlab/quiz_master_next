@@ -208,4 +208,50 @@ function qsm_audit_box() {
 	</table>
 	<?php
 }
+
+/**
+ * Generate User Behaviour Table
+ */
+function qsm_generate_user_behaviour(){
+	global $wpdb;
+	if ( ! current_user_can( 'moderate_comments' ) ) {
+		return;
+	}
+	$query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_user_behaviour_analytics ORDER BY updated ASC");
+	$user_data = $wpdb->get_results($query);
+	?>
+	<div class="wrap qsm-user-behaviour-page">
+	<h2><?php esc_html_e('User Behaviour', 'quiz-master-next'); ?></h2>
+	<table class=widefat>
+		<thead>
+			<tr>
+				<th><?php esc_html_e( 'Quiz ID', 'quiz-master-next' ); ?></th>
+				<th><?php esc_html_e( 'IP Address', 'quiz-master-next' ); ?></th>
+				<th><?php esc_html_e( 'User', 'quiz-master-next' ); ?></th>
+				<th><?php esc_html_e( 'Action', 'quiz-master-next' ); ?></th>
+				<th><?php esc_html_e( 'Time', 'quiz-master-next' ); ?></th>
+			</tr>
+		</thead>
+		<tbody id="the-list">
+			<?php
+			$alternate = '';
+			foreach ( $user_data as $data ) {
+				if ( $alternate ) {
+					$alternate = '';
+				} else {
+					$alternate = ' class="alternate"';
+				}
+				echo "<tr{$alternate}>";
+				echo "<td>$data->quiz_id</td>";
+				echo "<td>$data->ip_address</td>";
+				echo "<td>$data->user</td>";
+				echo "<td>$data->user_behaviour</td>";
+				echo "<td>$data->updated</td>";
+				echo "</tr>";
+			}
+			?>
+		</tbody>
+	</table>
+<?php
+}
 ?>

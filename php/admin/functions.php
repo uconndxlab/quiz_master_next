@@ -796,6 +796,31 @@ function qsm_check_create_tables(){
     if( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) != $quiz_table_name ) {
         QSM_Install::install();
     }
+    qsm_check_user_analytics_table();
+}
+
+/**
+ * Create table to track user Analytics
+ * 
+ */
+function qsm_check_user_analytics_table(){
+    global $wpdb; 
+    $analytics_table_name = $wpdb->prefix . "mlw_user_behaviour_analytics";
+    if( $wpdb->get_var( "SHOW TABLES LIKE '$analytics_table_name'" ) != $analytics_table_name ) {
+        $sql = "CREATE TABLE $analytics_table_name (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            quiz_id mediumint(9) NOT NULL,
+            ip_address TEXT NOT NULL,
+            user TEXT NOT NULL,
+            user_behaviour TEXT NOT NULL,
+            updated DATETIME DEFAULT CURRENT_TIMESTAMP, 
+            PRIMARY KEY  (id)
+            ) $charset_collate;";
+  
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+        
+    }
 }
 add_action('admin_init', 'qsm_check_create_tables');
 

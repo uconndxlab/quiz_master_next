@@ -215,6 +215,7 @@ class QSM_Emails {
 		foreach ( $to_array as $to_email ) {
 			if ( is_email( $to_email ) ) {
 				wp_mail( $to_email, $subject, $content, $headers, $attachments );
+				$mlwQuizMasterNext->audit_manager->new_user_behaviour($response_data['quiz_id'], __('Email sent to ', 'quiz-master-next').$to_email);
 			}
 		}
 	}

@@ -262,7 +262,7 @@ class QMNQuizManager {
                 return __('It appears that this quiz is not set up correctly', 'quiz-master-next');
             }
             $question_amount = intval($question_amount);
-
+            $mlwQuizMasterNext->audit_manager->new_user_behaviour($quiz, __('Appeared for quiz', 'quiz_master_next'));
             // Legacy variable.
             global $mlw_qmn_quiz;
             $mlw_qmn_quiz = $quiz;
@@ -1147,6 +1147,7 @@ class QMNQuizManager {
      */
     public function submit_results($qmn_quiz_options, $qmn_array_for_variables) {
         global $qmn_allowed_visit;
+        global $mlwQuizMasterNext;
         $result_display = '';
 
         $qmn_array_for_variables['user_ip'] = $this->get_user_ip();
@@ -1198,7 +1199,7 @@ class QMNQuizManager {
         $qmn_array_for_variables['time_taken'] = current_time('h:i:s A m/d/Y');
         $qmn_array_for_variables['contact'] = $contact_responses;
         $qmn_array_for_variables['hidden_questions'] = isset($_POST['qsm_hidden_questions']) ? json_decode(html_entity_decode(stripslashes($_POST['qsm_hidden_questions'])),true) : array();
-	$qmn_array_for_variables = apply_filters('qsm_result_variables', $qmn_array_for_variables);
+	    $qmn_array_for_variables = apply_filters('qsm_result_variables', $qmn_array_for_variables);
 
         if (!isset($_POST["mlw_code_captcha"]) || ( isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"] )) {
 
@@ -1292,6 +1293,11 @@ class QMNQuizManager {
 				}
 			}
             $qmn_array_for_variables['result_id'] = $results_id;
+
+            //
+            if($results_id){
+                $mlwQuizMasterNext->audit_manager->new_user_behaviour($qmn_quiz_options->quiz_id, __('Result saved in database', 'quiz-master-next'));
+            }
 
 			// Determines redirect/results page.
             $results_pages = $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
@@ -1933,7 +1939,7 @@ class QMNQuizManager {
      * @since 5.3.0
      * @return string The IP address or a phrase if not collected
      */
-    private function get_user_ip() {
+    public function get_user_ip() {
         $ip = __('Not collected', 'quiz-master-next');
         $settings = (array) get_option('qmn-settings');
         $ip_collection = '0';
