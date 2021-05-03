@@ -1,0 +1,13 @@
+.search-user-behaviour{
+    float: right;
+    margin-bottom: 15px;
+}
+
+.user-behaviour-records{
+    float: right;
+    text-align: right;
+    margin-right: 10px;
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 5px;
+}

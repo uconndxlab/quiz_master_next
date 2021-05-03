@@ -222,6 +222,9 @@ function qsm_generate_user_behaviour(){
 	?>
 	<div class="wrap qsm-user-behaviour-page">
 	<h2><?php esc_html_e('User Behaviour', 'quiz-master-next'); ?></h2>
+	<?php if(sizeof($user_data) >= 1) {?>
+	<input type="text" class="search-user-behaviour" placeholder="Search User Behaviour" autocomplete="off">
+	<span class="user-behaviour-records"><span></span><?php _e(' Records', 'quiz-master-next'); ?></span>
 	<table class=widefat>
 		<thead>
 			<tr>
@@ -253,5 +256,8 @@ function qsm_generate_user_behaviour(){
 		</tbody>
 	</table>
 <?php
+	} else {
+		echo "<span class='empty_user_behaviour'>".__('No User behaviour Found', 'quiz-master-next')."</span>";
+	}
 }
 ?>

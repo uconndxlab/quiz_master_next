@@ -223,6 +223,11 @@ class MLWQuizMasterNext {
 		if($hook_prefix == 'admin_page_mlw_quiz_options'){
 			wp_enqueue_script( 'wp-tinymce' );
 		}
+
+		if($hook_prefix == 'qsm_page_qsm_quiz_user_behaviour'){
+			wp_enqueue_style( 'qsm_user_behaviour_style', plugins_url('/css/qsm-user-behaviour.css', __FILE__), array(), $mlwQuizMasterNext->version);
+			wp_enqueue_script( 'qsm_user_behaviour_script', plugins_url('/js/qsm-user-behaviour.js', __FILE__), array('jquery'), $mlwQuizMasterNext->version);
+		}
 	}
 
 	/**

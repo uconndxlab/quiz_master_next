@@ -60,7 +60,7 @@ class QSM_Audit {
    * Adds new logs to User Audit behaviour table
    *
    * @since 7.1.17
-   * @param string $action The action that is to be saved into the audit trail
+   * @param string $action The action that is to be saved into the userbehavior
    * @return bool Returns true if successfull and false if fails
    */
   public function new_user_behaviour( $quiz_id, $action, $user = null ) {
@@ -82,11 +82,9 @@ class QSM_Audit {
 
     $username = $current_user->display_name;
 
-    // Returns if the current user is not valid
-    if ( ! ( $current_user ) ) {
+    if($username == ''){
       $username = 'Guest';
     }
-
     
 
     global $wpdb;
