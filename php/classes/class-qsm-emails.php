@@ -215,6 +215,8 @@ class QSM_Emails {
 		foreach ( $to_array as $to_email ) {
 			if ( is_email( $to_email ) ) {
 				wp_mail( $to_email, $subject, $content, $headers, $attachments );
+				//fires after sending email
+				do_action('qsm_email_sent', $response_data['quiz_id']);
 			}
 		}
 	}

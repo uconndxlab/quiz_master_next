@@ -261,6 +261,8 @@ class QMNQuizManager {
             if (false === $success) {
                 return __('It appears that this quiz is not set up correctly', 'quiz-master-next');
             }
+            // fires on quiz load
+            do_action('qsm_quiz_load', $quiz);
             $question_amount = intval($question_amount);
 
             // Legacy variable.
@@ -1285,6 +1287,9 @@ class QMNQuizManager {
 			}
             $qmn_array_for_variables['result_id'] = $results_id;
 
+            // Fires when data saves / updates in database.
+            do_action('qsm_result_saved', $qmn_array_for_variables['quiz_id']);
+
 			// Determines redirect/results page.
             $results_pages = $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
             $result_display .= $results_pages['display'];
@@ -1925,7 +1930,7 @@ class QMNQuizManager {
      * @since 5.3.0
      * @return string The IP address or a phrase if not collected
      */
-    private function get_user_ip() {
+    public function get_user_ip() {
         $ip = __('Not collected', 'quiz-master-next');
         $settings = (array) get_option('qmn-settings');
         $ip_collection = '0';
