@@ -61,6 +61,20 @@ class QMNQuizCreator {
 	}
 
 	/**
+	 * Gets the quiz ID stored (for backwards compatibility)
+	 *
+	 * @since 5.0.0
+	 * @return int|false The ID of the quiz stored or false
+	 */
+	public function get_id() {
+		if ( $this->quiz_id ) {
+			return intval( $this->quiz_id );
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Creates a new quiz with the default settings
 	 *
 	 * @access public
@@ -203,7 +217,6 @@ class QMNQuizCreator {
 
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );
-
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $new_quiz );
 		} else {
