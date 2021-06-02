@@ -157,6 +157,7 @@ class QSM_Contact_Manager {
 							break;
 
 						default:
+							do_action('qsm_extra_contact_filed' , $fields);
 							break;
 					}
 				?>
@@ -294,8 +295,10 @@ class QSM_Contact_Manager {
                     "a" => array(
                         "href" => array(),
                     )
-                );     
+                );    
+        
 		$total_fields = count( $fields );
+		$contact_field =  $fields;
 		for ( $i = 0; $i < $total_fields; $i++ ) {                         
                         $label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
 			$fields[ $i ] = array(
@@ -304,7 +307,9 @@ class QSM_Contact_Manager {
 				'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
 				'required' => sanitize_text_field( $fields[ $i ]['required'] ),
 			);
-		}                
+			 $fields [ $i ] = apply_filters( 'qsm_contact_fields',  $fields[ $i ] , $contact_field[$i] );        
+		}    
+		
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
 		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', serialize( $fields ) );
